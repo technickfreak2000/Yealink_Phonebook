@@ -1,0 +1,85 @@
+.vl {
+    border-left: 2px solid grey;
+    margin-top: 10px;
+    height: 30px;
+    margin-right: 7px;
+    margin-left: 7px;
+}
+
+.menu {
+    z-index: 1;
+}
+
+.menu ul {
+    z-index: 1;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #dddddd;
+    height: 50px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    left: 0px;
+}
+  
+.menu li {
+    float: left;
+}
+  
+.menu li a {
+    display: block;
+    padding: 15px;
+    font-weight: bold;
+}
+
+li a:hover {
+    background-color: rgb(233, 233, 233);
+}
+
+.menu li p{
+    margin-left: 10px;
+    margin-right: 20px;
+    white-space: nowrap;
+    color: RED;
+    font-weight: bold;    
+}
+
+.right{ 
+    z-index: 1;
+    position: fixed;
+    right: 65px;
+}
+
+.right2{ 
+    z-index: 1;
+    position: fixed;
+    right: 15px;
+}
+
+.main{
+    position: relative;
+    top: 50px;
+    margin: 10px;
+    color: darkslategrey;
+}
+
+body{
+    margin: 0px;
+    background-color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    color: black; 
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    
+}
+
+th, td {
+    padding: 10px;
+}
+
