@@ -31,6 +31,13 @@
             <p>Einträge: </p>
 
             <?php
+                INCLUDE 'config.php';
+                GLOBAL $first;
+                if ($first == true)
+                {
+                    header("LOCATION: ./setup.php");
+                }
+
                 INCLUDE 'algo.php';
 
                 if (isset($_GET["xml"])) {

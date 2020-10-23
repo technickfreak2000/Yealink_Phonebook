@@ -1,25 +1,42 @@
 <?php
     INCLUDE 'config.php';
     GLOBAL $overwrite;
-    if (!$overwrite)
+
+    function tryConnectionToDb()
     {
+        global $first;
+        global $servername;
+        global $username;
+        global $password;
+        global $dbname;
+
+        $ret = array();
+
         $conn = new mysqli($servername, $username, $password, $dbname);
 
         // Check connection
         if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+            $ret[0] = false;
+            $ret[1] = $conn->connect_error;
         }
-
-        // First initialization
-        if ($first === true)
+        else
         {
-            revertSQLfile('entry.sql');
-            revertSQLfile('numbers.sql');
-            $first = false;
+            $ret[0] = true;
         }
 
         $conn->close();
 
+        return $ret;
+    }
+
+    if (!$overwrite)
+    {
+        $ret = tryConnectionToDb();
+        if (!$ret[0])
+        {
+            die ("Connection Error " . $ret[1]);
+        }
+        
         $overwrite = false;
     }
     
@@ -55,7 +72,7 @@
             $sql = "SELECT id, name FROM entry WHERE LOCATE('" . $txtSuche . "', name)>0 ORDER BY name LIMIT $objects, $selNumber";
         }
 
-        $result = $conn->query($sql);
+        $result = $conn->query($sql) or die("Failed: " . $conn->error);
 
         global $x;
         $x = 1;
@@ -64,15 +81,15 @@
             while($row = $result->fetch_assoc()) {
                 
                 $sql2 = "SELECT number FROM numbers, entry WHERE numbers.id_entry=entry.id AND entry.id=\"" . $row["id"] . "\"";
-                $result2 = $conn->query($sql2);
+                $result2 = $conn->query($sql2) or die("Failed: " . $conn->error);
 
-                echo "<tr><td><input type=\"checkbox\" name=\"checkbox" . $x . "\" value=\"" . $row["id"] . "\"></td>" . "<td>" . $row["id"]. "</td><td>" . $row["name"]. "</td>";
+                echo "<tr><td><input type=\"checkbox\" name=\"checkbox" . $x . "\" value=\"" . $row["id"] . "\"></td>" . "<td>" . $row["id"]. "</td><td>" . htmlspecialchars($row["name"]). "</td>";
                 $x++;
                 if ($result2->num_rows > 0) {
                     // output data of each row
                     echo "<td>";
                     while($row2 = $result2->fetch_assoc()) {
-                        echo $row2["number"] . "<br>";
+                        echo htmlspecialchars($row2["number"]) . "<br>";
                     }}            
                 echo "</td></tr>";
             }
@@ -84,6 +101,18 @@
 
     function revertSQLfile($filename)
     {
+        global $first;
+        global $servername;
+        global $username;
+        global $password;
+        global $dbname;
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
                 // Temporary variable, used to store current query
                 $templine = '';
                 // Read in entire file
@@ -101,13 +130,13 @@
                 if (substr(trim($line), -1, 1) == ';')
                 {
                     // Perform the query
-                    global $conn;
                     $conn->query($templine) or print('Error performing query \'<strong>' . $templine . '\': ' . $conn->error . '<br /><br />');
                     // Reset temp variable to empty
                     $templine = '';
                 }
                 }
                 echo "Tables imported successfully";
+                $conn->close();
     }
 
     function createXML()
@@ -131,13 +160,13 @@
         }
 
         $sql = "SELECT id, name FROM entry";
-        $result = $conn->query($sql);
+        $result = $conn->query($sql) or die("Failed: " . $conn->error);
 
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 
                 $sql2 = "SELECT number FROM numbers, entry WHERE numbers.id_entry=entry.id AND entry.id=\"" . $row["id"] . "\"";
-                $result2 = $conn->query($sql2);
+                $result2 = $conn->query($sql2) or die("Failed: " . $conn->error);
 
                 $DirectoryEntry = $xml->addChild('DirectoryEntry');
                 $DirectoryEntry->addChild('Name', $row["name"]);
@@ -166,7 +195,7 @@
         global $dbname;
 
         global $phonebook;
-        
+
         $var_first = var_export($first, true);
         $var_servername = var_export($servername, true);
         $var_username = var_export($username, true);
@@ -184,8 +213,14 @@
     // Phonebook
     \$phonebook = $var_phonebook;
     \n?>";
-
-        file_put_contents('../config.php', $var);
+        if(file_exists("../config.php"))
+        {
+            file_put_contents('../config.php', $var);
+        }
+        if(file_exists("./config.php"))
+        {
+            file_put_contents('./config.php', $var);
+        }
     }
 
     function insertDB($name, $numbers)
@@ -426,6 +461,30 @@
                 $conn->query($sql) or print('Error performing query: ' . $conn->error . '<br /><br />');
             }
         }
+
+        $conn->close();
+    }
+
+    function checkIfTableExists($table)
+    {
+        global $first;
+        global $servername;
+        global $username;
+        global $password;
+        global $dbname;
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        $ret = true;
+        $conn->query( "SELECT 1 FROM `$table` LIMIT 1 ") or $ret=false;
+        
+        return $ret;
+        
 
         $conn->close();
     }

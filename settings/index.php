@@ -64,7 +64,7 @@
                                 <p>DB Passwort:</p>
                             </td>
                             <td>
-                                <input type="text" placeholder="admin123" name="txtDBPasswd" value="<?php print $password; ?>"></input>
+                                <input type="text" placeholder="unverändert" name="txtDBPasswd"></input>
                             </td>
                         </tr>
                     </tbody>
@@ -94,9 +94,13 @@
                         {
                             $servername = $_GET["txtDBHost"];
                             $username = $_GET["txtDBUser"];
-                            $password = $_GET["txtDBPasswd"];
+                            $passwordNew = $_GET["txtDBPasswd"];
                             $dbname = $_GET["txtDBName"];
                             $phonebook = $_GET["txtPhonebook"];
+                            if ($passwordNew != "")
+                            {
+                                $password = $passwordNew;
+                            }
                             writeVar();
                             sleep(3);
                             header("LOCATION: ../");

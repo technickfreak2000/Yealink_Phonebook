@@ -1,11 +1,11 @@
 <?php
 
-    $first = false; 
+    $first = true; 
 
     // Database
     $servername = 'localhost'; 
-    $username = 'phonebook'; 
-    $password = 'Qm0PvEjtXIaAysR7.!'; 
+    $username = ''; 
+    $password = ''; 
     $dbname = 'phonebook'; 
 
     // Phonebook
