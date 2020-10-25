@@ -3,8 +3,7 @@ A MariaDB based phonebook, which creates an xml file for Yealink phones.
 
 Until now, it should be considered a beta version. So feel free to report bugs.
 
-It is also recommended to protect the website with a password. 
-There are some security updates coming soon.
+It is also recommended to protect the website with a password.
 
 # How to install it?
 
