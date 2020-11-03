@@ -72,7 +72,7 @@
                                 <p>DB Servername:</p>
                             </td>
                             <td>
-                                <input type="text" placeholder="localhost" name="txtDBHost" value="<?php print $servername; ?>"></input>
+                                <input type="text" placeholder="localhost" name="txtDBHost" value="<?php print htmlspecialchars($servername); ?>"></input>
                             </td>
                         </tr>
                         <tr>
@@ -80,7 +80,7 @@
                                 <p>DB Name:</p>
                             </td>
                             <td>
-                                <input type="text" placeholder="phonebook" name="txtDBName" value="<?php print $dbname; ?>"></input>
+                                <input type="text" placeholder="phonebook" name="txtDBName" value="<?php print htmlspecialchars($dbname); ?>"></input>
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +88,7 @@
                                 <p>DB User:</p>
                             </td>
                             <td>
-                                <input type="text" placeholder="root" name="txtDBUser" value="<?php print $username; ?>"></input>
+                                <input type="text" placeholder="root" name="txtDBUser" value="<?php print htmlspecialchars($username); ?>"></input>
                             </td>
                         </tr>
                         <tr>
@@ -96,7 +96,7 @@
                                 <p>DB Passwort:</p>
                             </td>
                             <td>
-                                <input type="text" placeholder="admin123" name="txtDBPasswd" value="<?php print $password; ?>"></input>
+                                <input type="text" placeholder="admin123" name="txtDBPasswd" value="<?php print htmlspecialchars($password); ?>"></input>
                             </td>
                         </tr>
                     </tbody>

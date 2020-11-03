@@ -346,10 +346,10 @@
     function compileEditHtml($dbId, $number, $name, $telNumbers)
     {
         $compiled = '
-        Name: <input type="text" placeholder="Name" name="txtName' . $number . '" value="' . $name . '"></input>
+        Name: <input type="text" placeholder="Name" name="txtName' . $number . '" value="' . htmlspecialchars($name) . '"></input>
         <br><br>
         <p>Nummern können kommagetrennt eingegeben werden:</p>
-        <textarea name="txtNum' . $number . '" cols="60" rows="8" placeholder="BSP: 1234,56789,12345">' . $telNumbers . '</textarea>
+        <textarea name="txtNum' . $number . '" cols="60" rows="8" placeholder="BSP: 1234,56789,12345">' . htmlspecialchars($telNumbers) . '</textarea>
         <input type="hidden" name="dbid' . $number . '" value="' . $dbId . '">
         <br><br><hr><br>';
 
